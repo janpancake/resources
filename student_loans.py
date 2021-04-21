@@ -199,10 +199,12 @@ def call_calculate_monthly_takehome(entries):
         )
         additional_monthly_payment = float(entries["Additional Monthly Payment"].get())
     entries["Monthly Take-home Salary"].delete(0, tk.END)
-    if not isinstance(monthly_takehome, str):
+    if not isinstance(monthly_takehome, str) and not isinstance(monthly_payment_base, str):
         entries["Monthly Take-home Salary"].insert(0, "{:.2f}".format(monthly_takehome - monthly_payment_base - additional_monthly_payment))
-    else:
-        entries["Monthly Take-home Salary"].insert(0, monthly_takehome)
+    elif isinstance(monthly_takehome, str):
+        entries["Monthly Take-home Salary"].insert(0, monthly_takehome)  # error for salary calculation
+    elif isinstance(monthly_payment_base, str):
+        entries["Monthly Take-home Salary"].insert(0, monthly_payment_base)  # error from loan calculation
 
 
 def make_form(root):
